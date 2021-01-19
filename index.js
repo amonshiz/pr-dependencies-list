@@ -9,7 +9,7 @@ const run = async () => {
     return;
   }
 
-  const token = core.getInput('github-token', {required: true})
+  const token = core.getInput('github_token', {required: true})
   if (!token) {
     core.setFailed("Missing GITHUB_TOKEN");
     return;
