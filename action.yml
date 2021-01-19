@@ -1,10 +1,6 @@
 name: 'Wait'
 description: 'Wait a designated number of milliseconds'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
   github_token:
     description: 'Token to use for authenticated GitHub API requests'
     required: false
