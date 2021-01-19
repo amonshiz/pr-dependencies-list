@@ -23,23 +23,36 @@ const run = async () => {
     return;
   }
 
-  if (!pullRequest.body || pullRequest.body.length < 1) {
+  const baseBody = pullRequest.body
+  if (!baseBody || baseBody.length < 1) {
     console.log('No pull request body to parse');
     return;
   }
 
   const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/gm;
   let m;
-  while ((m = dependsOnRegex.exec(pullRequest.body)) !== null) {
+  while ((m = dependsOnRegex.exec(baseBody)) !== null) {
+    console.log(`m: ${m}`);
+
     // This is necessary to avoid infinite loops with zero-width matches
     if (m.index === dependsOnRegex.lastIndex) {
       dependsOnRegex.lastIndex++;
     }
+    console.log('not zero-width match');
 
-    // The result can be accessed through the `m`-variable.
-    m.forEach((match, groupIndex) => {
-      console.log(`Found match, group ${groupIndex}: ${match}`);
-    });
+    if (Object.prototype.hasOwnProperty.call(m, 'groups')) {
+      console.log('No matched group')
+      continue;
+    }
+
+    const groups = m.groups
+    const nameGroup = groups['name']
+    if (!nameGroup) {
+      console.log('No name group');
+      continue;
+    }
+
+    console.log(`name group: ${nameGroup}`)
   }
 
   // const parentPrMatch = pullRequest.body.match(dependsOnRegex);

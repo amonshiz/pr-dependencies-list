@@ -21,3 +21,8 @@ test('test runs', () => {
   const ip = path.join(__dirname, 'index.js');
   console.log(cp.execSync(`node ${ip}`, {env: process.env}).toString());
 })
+
+test('test regex', () => {
+  process.env['github_token'] = "abc";
+  process.env
+})
