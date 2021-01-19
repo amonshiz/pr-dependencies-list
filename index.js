@@ -8,7 +8,7 @@ const run = async () => {
     core.setFailed("Not a pull request");
     return;
   }
-  console.log(`pullRequest: ${JSON.stringify(pullRequest, undefined, 2)}`)
+  // console.log(`pullRequest: ${JSON.stringify(pullRequest, undefined, 2)}`)
 
   const token = core.getInput('github_token', {required: true})
   if (!token) {
@@ -21,6 +21,7 @@ const run = async () => {
     console.log('No pull request body to parse');
     return;
   }
+  console.log(`baseBody: ${baseBody}`)
 
   const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/gm;
   let m;
