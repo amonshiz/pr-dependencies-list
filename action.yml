@@ -1,5 +1,5 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'PR Dependencies List'
+description: 'Create the PR Dependencies list and update PRs in stack'
 inputs:
   github_token:
     description: 'Token to use for authenticated GitHub API requests'

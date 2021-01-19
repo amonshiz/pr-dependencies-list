@@ -1,7 +1,5 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const wait = require('./wait');
-
 
 // most @actions toolkit packages have async methods
 const run = async () => {
@@ -23,6 +21,8 @@ const run = async () => {
     core.setFailed("No parent PR to traverse");
     return;
   }
+
+  console.log(`parentPrMatch: ${JSON.stringify(parentPrMatch, undefined, 2)}`)
 
   console.log(`event payload: ${JSON.stringify(github.context.payload, undefined, 2)}`)
   //
