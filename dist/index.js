@@ -42,7 +42,8 @@ const run = async () => {
     console.log('not zero-width match');
 
     const groups = m.groups
-    console.log(`groups: ${groups}`);
+    console.log('groups')
+    console.log(groups)
     const parentprGroup = groups['parentpr']
     if (!parentprGroup) {
       console.log('No parentpr group');
