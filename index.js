@@ -21,13 +21,26 @@ const run = async () => {
     return;
   }
 
-  const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/g;
-  const parentPrMatch = pullRequest.body.match(dependsOnRegex);
-  console.log(`parentPrMatch: ${JSON.stringify(parentPrMatch, undefined, 2)}`)
-  if (Object.keys(parentPrMatch.groups).length < 1) {
-    core.setFailed("No parent PR to traverse");
-    return;
+  const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/gm;
+  let m;
+  while ((m = dependsOnRegex.exec(pullRequest.body)) !== null) {
+    // This is necessary to avoid infinite loops with zero-width matches
+    if (m.index === dependsOnRegex.lastIndex) {
+      dependsOnRegex.lastIndex++;
+    }
+
+    // The result can be accessed through the `m`-variable.
+    m.forEach((match, groupIndex) => {
+      console.log(`Found match, group ${groupIndex}: ${match}`);
+    });
   }
+
+  // const parentPrMatch = pullRequest.body.match(dependsOnRegex);
+  // console.log(`parentPrMatch: ${JSON.stringify(parentPrMatch, undefined, 2)}`)
+  // if (Object.keys(parentPrMatch.groups).length < 1) {
+  //   core.setFailed("No parent PR to traverse");
+  //   return;
+  // }
 
   console.log(`event payload: ${JSON.stringify(github.context.payload, undefined, 2)}`)
   //
