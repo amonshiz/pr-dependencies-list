@@ -42,13 +42,14 @@ const run = async () => {
     console.log('not zero-width match');
 
     const groups = m.groups
-    const nameGroup = groups['name']
-    if (!nameGroup) {
-      console.log('No name group');
+    console.log(`groups: ${groups}`);
+    const parentprGroup = groups['parentpr']
+    if (!parentprGroup) {
+      console.log('No parentpr group');
       continue;
     }
 
-    console.log(`name group: ${nameGroup}`)
+    console.log(`parentpr group: ${parentprGroup}`)
   }
 
   // const parentPrMatch = pullRequest.body.match(dependsOnRegex);
