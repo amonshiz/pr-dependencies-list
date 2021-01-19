@@ -34,11 +34,6 @@ const run = async () => {
     }
     console.log('not zero-width match');
 
-    if (Object.prototype.hasOwnProperty.call(m, 'groups')) {
-      console.log('No matched group')
-      continue;
-    }
-
     const groups = m.groups
     const nameGroup = groups['name']
     if (!nameGroup) {
@@ -56,7 +51,7 @@ const run = async () => {
   //   return;
   // }
 
-  console.log(`event payload: ${JSON.stringify(github.context.payload, undefined, 2)}`)
+  // console.log(`event payload: ${JSON.stringify(github.context.payload, undefined, 2)}`)
   //
   // try {
   //   const ms = core.getInput('milliseconds');
