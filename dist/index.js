@@ -23,6 +23,11 @@ const run = async () => {
     return;
   }
 
+  if (!pullRequest.body || pullRequest.body.length < 1) {
+    console.log('No pull request body to parse');
+    return;
+  }
+
   const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/g;
   const parentPrMatch = pullRequest.body.match(dependsOnRegex);
   console.log(`parentPrMatch: ${JSON.stringify(parentPrMatch, undefined, 2)}`)
