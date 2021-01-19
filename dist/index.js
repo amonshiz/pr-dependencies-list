@@ -15,6 +15,7 @@ const run = async () => {
     core.setFailed("Not a pull request");
     return;
   }
+  console.log(`pullRequest: ${JSON.stringify(pullRequest, undefined, 2)}`)
 
   const token = core.getInput('github_token', {required: true})
   if (!token) {
@@ -24,12 +25,11 @@ const run = async () => {
 
   const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/g;
   const parentPrMatch = pullRequest.body.match(dependsOnRegex);
+  console.log(`parentPrMatch: ${JSON.stringify(parentPrMatch, undefined, 2)}`)
   if (Object.keys(parentPrMatch.groups).length < 1) {
     core.setFailed("No parent PR to traverse");
     return;
   }
-
-  console.log(`parentPrMatch: ${JSON.stringify(parentPrMatch, undefined, 2)}`)
 
   console.log(`event payload: ${JSON.stringify(github.context.payload, undefined, 2)}`)
   //
