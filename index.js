@@ -44,6 +44,19 @@ const run = async () => {
     }
 
     console.log(`parentpr group: ${parentprGroup}`)
+
+    const token = core.getInput('github_token', { required: true });
+    const client = new github.GitHub(token);
+
+    const dependencyPR = await client.pulls.get( {
+      owner: github.context.payload.repository.owner,
+      repo: github.context.payload.repository.name,
+      pull_number: parentprGroup
+    });
+
+    const fetchedBody = dependencyPR.body;
+
+    console.log(`parentpr body: ${fetchedBody}`);
   }
 
   // const parentPrMatch = pullRequest.body.match(dependsOnRegex);
