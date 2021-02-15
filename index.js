@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 // most @actions toolkit packages have async methods
-const run = async () => {
+async function run() {
   const pullRequest = github.context.payload.pull_request
   if (!pullRequest) {
     core.setFailed("Not a pull request");
@@ -46,17 +46,21 @@ const run = async () => {
     console.log(`parentpr group: ${parentprGroup}`)
 
     const token = core.getInput('github_token', { required: true });
-    const client = new github.GitHub(token);
+    const client = new github.getOctokit(token)
 
-    const dependencyPR = await client.pulls.get( {
-      owner: github.context.payload.repository.owner,
-      repo: github.context.payload.repository.name,
-      pull_number: parentprGroup
-    });
+    try {
+      const dependencyPR = await client.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
+        owner: github.context.payload.repository.owner,
+        repo: github.context.payload.repository.name,
+        pull_number: parentprGroup
+      });
 
-    const fetchedBody = dependencyPR.body;
+      const fetchedBody = dependencyPR.body;
 
-    console.log(`parentpr body: ${fetchedBody}`);
+      console.log(`parentpr body: ${fetchedBody}`);
+    } catch (error) {
+      console.log(`Failed to fetch PR: ${error}`);
+    }
   }
 
   // const parentPrMatch = pullRequest.body.match(dependsOnRegex);
@@ -80,6 +84,6 @@ const run = async () => {
   // } catch (error) {
   //   core.setFailed(error.message);
   // }
-};
+}
 
 run();
