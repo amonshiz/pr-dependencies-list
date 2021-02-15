@@ -45,10 +45,10 @@ async function run() {
 
     console.log(`parentpr group: ${parentprGroup}`)
 
-    const token = core.getInput('github_token', { required: true });
-    const client = new github.getOctokit(token)
-
     try {
+      const token = core.getInput('github_token', { required: true });
+      const client = new github.getOctokit(token)
+
       const dependencyPR = await client.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
         owner: github.context.payload.repository.owner,
         repo: github.context.payload.repository.name,
