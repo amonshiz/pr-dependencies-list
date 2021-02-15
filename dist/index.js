@@ -9,7 +9,7 @@ const core = __nccwpck_require__(186);
 const github = __nccwpck_require__(438);
 
 // most @actions toolkit packages have async methods
-const run = async () => {
+async function run() {
   const pullRequest = github.context.payload.pull_request
   if (!pullRequest) {
     core.setFailed("Not a pull request");
@@ -30,7 +30,7 @@ const run = async () => {
   }
   console.log(`baseBody: ${baseBody}`)
 
-  const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/gm;
+  const dependsOnRegex = /Depends on:? #?(?<parentpr>[0-9]+)/gm;
   let m;
   while ((m = dependsOnRegex.exec(baseBody)) !== null) {
     console.log(`m: ${m}`);
@@ -51,6 +51,23 @@ const run = async () => {
     }
 
     console.log(`parentpr group: ${parentprGroup}`)
+
+    try {
+      const token = core.getInput('github_token', { required: true });
+      const client = new github.getOctokit(token)
+
+      const dependencyPR = await client.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
+        owner: github.context.payload.repository.owner,
+        repo: github.context.payload.repository.name,
+        pull_number: parentprGroup
+      });
+
+      const fetchedBody = dependencyPR.body;
+
+      console.log(`parentpr body: ${fetchedBody}`);
+    } catch (error) {
+      console.log(`Failed to fetch PR: ${error}`);
+    }
   }
 
   // const parentPrMatch = pullRequest.body.match(dependsOnRegex);
@@ -74,7 +91,7 @@ const run = async () => {
   // } catch (error) {
   //   core.setFailed(error.message);
   // }
-};
+}
 
 run();
 
