@@ -23,7 +23,7 @@ async function run() {
   }
   console.log(`baseBody: ${baseBody}`)
 
-  const dependsOnRegex = /Depends on: #?(?<parentpr>[0-9]+)/gm;
+  const dependsOnRegex = /Depends on:? #?(?<parentpr>[0-9]+)/gm;
   let m;
   while ((m = dependsOnRegex.exec(baseBody)) !== null) {
     console.log(`m: ${m}`);
