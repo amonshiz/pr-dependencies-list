@@ -54,13 +54,21 @@ async function run() {
 
     try {
       const token = core.getInput('github_token', { required: true });
-      const client = new github.getOctokit(token)
+      const octokit = github.getOctokit(token)
+      const context = github.context
 
-      const dependencyPR = await client.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
-        owner: github.context.payload.repository.owner,
-        repo: github.context.payload.repository.name,
-        pull_number: parentprGroup
+      const { data: pullRequest } = await octokit.pulls.get({
+        ...context.repo,
+        pull_number: parentprGroup,
       });
+
+      console.log(pullRequest);
+
+      // const dependencyPR = await client.pulls.get({
+      //   owner: github.context.payload.repository.owner,
+      //   repo: github.context.payload.repository.name,
+      //   pull_number: parentprGroup
+      // });
 
       const fetchedBody = dependencyPR.body;
 
